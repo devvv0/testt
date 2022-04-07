@@ -32,14 +32,14 @@ class _MyHomePageState extends State<MyHomePage> {
     return Material(
       child: Column(
         children: [
-          Text('سلام سعید خوبی؟'),
+          const Text('سلام سعید خوبی؟'),
           ElevatedButton(
               onPressed: (){
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => Home(),)
             );
-          }, child: Text('سلام سعید خوبی؟'))
+          }, child: const Text('سلام سعید خوبی؟'))
         ],
       ),
     );
