@@ -5,11 +5,11 @@ workflows:
     max_build_duration: 60
     environment:
       groups:
-        - group_name
+        - groupname
       vars:
         PUBLIC_ENV_VAR: "1.0.0"
       flutter: stable
-      xcode: latest
+      xcode: 12.5
     cache:
       cache_paths:
         - ~/.pub-cache
@@ -22,12 +22,18 @@ workflows:
           source: true
       cancel_previous_builds: false
     scripts:
-      - ...
+        - name: Launch emulator
+          script: |
+           set -e # exit on first failed command
+
+           cd $ANDROID_HOME/tools
+           emulator -avd emulator &
+           adb wait-for-device
     artifacts:
       - build/**/outputs/bundle/**/*.aab
     publishing:
       email:
         recipients:
-          - name@example.com
+          - azitamohammadi82@gmail.com
       scripts:
         - echo 'Post-publish script'
