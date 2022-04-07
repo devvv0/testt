@@ -1,39 +1,18 @@
 workflows:
   my-workflow:
-    name: testt
-    instance_type: mac_mini
-    max_build_duration: 60
+    working_directory: mobile
     environment:
-      groups:
-        - groupname
-      vars:
-        PUBLIC_ENV_VAR: "1.0.0"
-      flutter: stable
+      flutter: beta
       xcode: 12.5
-    cache:
-      cache_paths:
-        - ~/.pub-cache
-    triggering:
-      events:
-        - push
-      branch_patterns:
-        - pattern: '*'
-          include: true
-          source: true
-      cancel_previous_builds: false
     scripts:
-        - name: Launch emulator
-          script: |
-           set -e # exit on first failed command
+      - name: Run iOS tests
+        script: |
+          set -e # exit on first failed command
 
-           cd $ANDROID_HOME/tools
-           emulator -avd emulator &
-           adb wait-for-device
-    artifacts:
-      - build/**/outputs/bundle/**/*.aab
-    publishing:
-      email:
-        recipients:
-          - azitamohammadi82@gmail.com
-      scripts:
-        - echo 'Post-publish script'
+          xcode-project run-tests \
+              --workspace ${XCODE_WORKSPACE?} \
+              --scheme ${XCODE_SCHEME?} \
+              --device "iPhone 12"
+        test_report: build/ios/test/*.xml
+
+
